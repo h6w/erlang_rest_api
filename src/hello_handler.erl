@@ -9,6 +9,17 @@
 %% Callback Callbacks
 -export([hello_from_json/2]).
 
+%trails
+-behaviour(trails_handler).
+-export([trails/0]).
+
+trails() ->
+  MsgTrailsMetadata =
+    #{ get => #{ desc => "Returns a welcome string"
+              , 'content-type' => "text/plain"}
+     },
+  [trails:trail("/", ?MODULE, [], MsgTrailsMetadata)].
+
 init(Req, State) ->
     {cowboy_rest, Req, State}.
 

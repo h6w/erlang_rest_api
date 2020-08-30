@@ -10,13 +10,11 @@
 %% ===================================================================
 
 start(_StartType, _StartArgs) ->
-    Dispatch = cowboy_router:compile([         
-            {'_', [
+    Dispatch = trails:single_host_compile([         
                 {"/", hello_handler, []},
                 {"/register", register_handler, []},
                 {"/login", login_handler, []},
                 {"/logout", logout_handler, []}
-            ]}     
     ]),     
     {ok, _} = cowboy:start_clear(my_http_listener,
         [{port, 8080}],

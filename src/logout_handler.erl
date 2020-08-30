@@ -1,5 +1,15 @@
 -module(logout_handler).
--behavior(cowboy_rest).
+
+%trails
+-behaviour(trails_handler).
+-export([trails/0]).
+
+trails() ->
+  MsgTrailsMetadata =
+    #{ post => #{ desc => "Log out a user"
+              , 'content-type' => "text/plain"}
+     },
+  [trails:trail("/", ?MODULE, [], MsgTrailsMetadata)].
 
 %% REST Callbacks
 -export([init/2]).

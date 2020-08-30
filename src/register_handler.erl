@@ -1,5 +1,80 @@
 -module(register_handler).
--behavior(cowboy_rest).
+
+%trails
+-behaviour(trails_handler).
+-export([trails/0]).
+
+trails() ->
+  Metadata =
+    #{get =>
+      #{parameters => [
+          #{name => <<"token">>,
+            description => <<"Token from POST">>,
+            in => <<"path">>,
+            required => true,
+            schema =>
+              #{type => string,
+                example => <<"fhdjklehurigreiu2984673r84ogfr9u32">>
+              }
+          }
+        ],
+        description => "Gets echo var from the server",
+        responses => #{
+          <<"200">> => #{
+            description => <<"Gets echo var from the server 200 OK">>,
+            content => #{
+              'text/plain' =>
+                #{schema => #{
+                    type => string
+                  }
+                }
+            }
+          }
+        }
+      },
+      put =>
+      #{description => "First step in registering an account.",
+        parameters => [
+          #{name => <<"email">>,
+            description => <<"Email Address">>,
+            in => <<"path">>,
+            required => true,
+            schema =>
+              #{type => string,
+                example => <<"me@mydomain.com">>
+              }
+          },
+          #{name => <<"pass">>,
+            description => <<"Password - minimum 6 characters">>,
+            in => <<"path">>,
+            required => true, 
+            schema =>
+              #{type => string,
+                example => <<"aB^D3Fg">>
+              }
+          },
+          #{name => <<"fname">>,
+            description => <<"First Name">>,
+            in => <<"path">>,
+            required => false,
+            schema =>
+              #{type => string,
+                example => <<"John">>
+              }
+          },
+          #{name => <<"lname">>,
+            description => <<"Last Name">>,
+            in => <<"path">>,
+            required => false,
+            schema =>
+              #{type => string,
+                example => <<"Smith">>
+              }
+          }
+        ]
+      }
+    },
+  [trails:trail("/", register_handler, [], Metadata)].
 
 %% REST Callbacks
 -export([init/2]).
